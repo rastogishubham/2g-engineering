@@ -1,6 +1,4 @@
-class Point:
-	def ___init__(self, x, y):
-		self.coordinate = (x, y)
+#!/usr/bin/env python
 
 class Quadilateral:
 	def __init__(self, p1, p2, p3, p4):
@@ -19,6 +17,19 @@ class Line:
 	def __init__(self, p1, p2):
 		self.line_seg = [p1, p2]
 
+	def printLine(self):
+		for point in self.line_seg:
+			point.printPoint()
+		print '\n'
+
+
+class Point:
+	def __init__(self, x, y):
+		self.coordinate = (x, y)
+
+	def printPoint(self):
+		print self.coordinate
+
 def main():
 	p1 = Point(0, 0)
 	p2 = Point(0, 10)
@@ -29,7 +40,8 @@ def main():
 
 	list_lines = q1.getLines()
 
-	print list_lines
+	for i in list_lines:
+		i.printLine()
 
 if __name__ == '__main__':
 	main()
