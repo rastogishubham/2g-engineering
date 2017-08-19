@@ -8,9 +8,9 @@ Correct input should be given in the format shown below:
 
 p2                 p3
 o-----------------o
-|				  |
-|				  |
-|				  |
+|                 |
+|                 |
+|                 |
 |                 |
 |                 |
 o-----------------o
@@ -31,7 +31,7 @@ the order in which the points are entered do not violate the rules of entry
 
 The algorithm checks if one point of a Quadilateral is inside the other Quadilateral.
 It does so, by drawing a line from a point to the right most x coordinate. If the Point
-is inside the Quadilateral, it will have one intersection with an edge of the Quadilateral,
+is inside the Quadilateral, it will have an odd number of intersections with edges of the Quadilateral,
 therefore, the Quadilateral's will be overlapped
 '''
 
@@ -65,12 +65,17 @@ class Line:
 		for point in self.line_seg:
 			point.printPoint()
 		print '\n'
-
+	# Given three colinear points p, q, r, the function checks if
+	# point q lies on line segment 'pr'
 	def onSegment(self, p, q, r):
 		if q.X <= max(p.X, r.X) and q.X >= min(p.X, r.X) and q.Y <= max(p.Y, r.Y) and q.Y >= min(p.Y, r.Y):
 			return True
 		return False
-
+	# To find orientation of ordered triplet (p, q, r).
+	# The function returns following values
+	# 0 --> p, q and r are colinear
+	# 1 --> Clockwise
+	# 2 --> Counterclockwise
 	def orientation(self, p, q, r):
 		value = (q.Y - p.Y) * (r.X - q.X) - (q.X - p.X) * (r.Y - q.Y)
 
@@ -81,6 +86,8 @@ class Line:
 		else:
 			return 2
 
+	# The function that returns true if line segment 'p1q1'
+	# and 'p2q2' intersect.
 	def doesIntersect(self, line):
 		orient_1 = self.orientation(self.line_seg[0], self.line_seg[1], line.line_seg[0])
 		orient_2 = self.orientation(self.line_seg[0], self.line_seg[1], line.line_seg[1])
@@ -89,12 +96,16 @@ class Line:
 
 		if orient_1 != orient_2 and orient_3 != orient_4:
 			return True
+		# p1, q1 and p2 are colinear and p2 lies on segment p1q1
 		if orient_1 == 0 and self.onSegment(self.line_seg[0], line.line_seg[0], self.line_seg[1]):
 			return True
+		# p1, q1 and p2 are colinear and q2 lies on segment p1q1
 		elif orient_2 == 0 and self.onSegment(self.line_seg[0], line.line_seg[1], self.line_seg[1]):
 			return True
+		# p2, q2 and p1 are colinear and p1 lies on segment p2q2
 		elif orient_3 == 0 and self.onSegment(line.line_seg[0], self.line_seg[0], line.line_seg[1]):
 			return True
+		# p2, q2 and q1 are colinear and q1 lies on segment p2q2
 		elif orient_4 == 0 and self.onSegment(line.line_seg[0], self.line_seg[1], line.line_seg[1]):
 			return True
 		else:
